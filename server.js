@@ -1,0 +1,24 @@
+// const express=require('express');
+// const app=express();
+// const http=require('http');
+// const server=http.createServer(app);
+
+// const io=require('socket.io')(server,{
+//     cors:{origin:"*"}
+// });
+
+// io.on('connection',(socket)=>{
+//     console.log('connection');
+//     socket.on('sendChatToServer',(message)=>{
+//         console.log(message);
+//         io.sockets.emit('sendChatToClient',message);
+//         // socket.broadcast.emit('sendChatTOClient',message);
+//     })
+//     socket.on('disconnect',(socket)=>{
+//         console.log('Disconnect');
+//     });
+// });
+
+// server.listen(3000,()=>{
+//     console.log('Server is running');
+// })
