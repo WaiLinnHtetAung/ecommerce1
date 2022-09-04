@@ -34,7 +34,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label mb-2">Birthday</label>
-                    <input style="height:50px;" type="text" name="birthday" class="form-control" placeholder="Enter Your Birthday"
+                    <input style="height:50px;" type="date" name="birthday" class="form-control" placeholder="Enter Your Birthday"
                         id="birthday" aria-describedby="birthday" >
                 </div>
                 <div class="mb-3">

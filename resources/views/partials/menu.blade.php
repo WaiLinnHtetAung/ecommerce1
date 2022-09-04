@@ -99,18 +99,18 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ route("admin.checkout") }}" class="c-sidebar-nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "c-active" : "" }}">
+                <a href="{{route('order#list')}}" class="c-sidebar-nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "c-active" : "" }}">
                     <i class="fas fa-archive c-sidebar-nav-icon">
 
                     </i>
                    Orders
                 </a>
-                <a href="#" class="c-sidebar-nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "c-active" : "" }}">
+                {{-- <a href="#" class="c-sidebar-nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "c-active" : "" }}">
                     <i class="fas fa-archive c-sidebar-nav-icon">
 
                     </i>
                    Cancel Orders
-                </a>
+                </a> --}}
             </li>
         @endcan
         @if(file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))

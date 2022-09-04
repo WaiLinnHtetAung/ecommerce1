@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-12 table-responsive">
                         {{-- @if (!$orders->isEmpty()) --}}
-                      
+
                         <table class="table table-bordered align-middle overflow-auto">
                             <thead>
                                 <tr>
@@ -76,5 +76,5 @@
             </div>
         </div>
     </div>
-    
+
 @endsection

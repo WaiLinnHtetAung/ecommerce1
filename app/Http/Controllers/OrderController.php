@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
 use App\Models\User;
-use App\Notifications\RealTimeNotification;
-use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Notifications\RealTimeNotification;
+
 class OrderController extends Controller
 {
   public function index(){
@@ -45,8 +46,24 @@ class OrderController extends Controller
     $admin=User::find(1);
     // $admin->notify(new RealTimeNotification('New Orders Is Notificated',$orders));
     // return response()->json(['message'=>'Your Order is now successfully added']);
-    return redirect()->route('cart');
+    return redirect()->route('products#list')->with(['orderSuccess' => 'Your order is submitted successfully. Thank for purchasing.']);
   }
+
+//   =============admin order list===========
+    public function orderList() {
+
+        $orders = Order::orderBy('id','desc')->get();
+
+        return view('adminOrderList', compact('orders'));
+    }
+
+    // =============admin order detail============
+    public function detail($id) {
+        $order = Order::where('id', $id)->first();
+        // return $order->record;
+        return view('adminOrderDetail', compact('order'));
+    }
+
   public function getOrders($id){
      $orders=Order::where('user_id',$id)->get();
      return response()->json([

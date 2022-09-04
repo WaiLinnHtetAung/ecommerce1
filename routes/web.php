@@ -1,25 +1,26 @@
 <?php
 
-use App\Events\RealTimeMessage;
-use App\Http\Controllers\AuthController;
-use App\Models\Product;
-use App\Http\Controllers\cartController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\NotificationSendController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PostController;
-use App\Mail\EmailVerificatioMail;
-use App\Models\Order;
-use App\Models\ProductCategory;
 use App\Models\User;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Notification;
-use NotificationChannels\Smspoh\SmspohMessage;
+use App\Models\Order;
+use App\Models\Product;
+use App\Events\RealTimeMessage;
+use App\Models\ProductCategory;
+use App\Mail\EmailVerificatioMail;
 use App\Notifications\InvoicePaid;
-use App\Notifications\RealTimeNotification;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\cartController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\OrderController;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Notifications\RealTimeNotification;
+use App\Http\Controllers\CategoryController;
+use Illuminate\Support\Facades\Notification;
+use NotificationChannels\Smspoh\SmspohMessage;
+use App\Http\Controllers\NotificationSendController;
+use App\Http\Controllers\Asonemart\ProductController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::redirect('/', '/login');
 // Route::redirect('/admin', '/dashboard');
@@ -169,14 +170,14 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
 
 
 //user home page
-Route::get('product', function () {
-    $products = Product::with('categories:name','tags')->get();
-    $categories = ProductCategory::all();
-    return view('addtocart', compact('products', 'categories'));
-})->name('cart');
-Route::get('/productByTag/{id}',[CategoryController::class,'productByTag']);
-Route::get('/category', [CategoryController::class, 'index'])->name('cateogry');
-Route::get('/productByCategory/{id}', [CategoryController::class, 'productByCategory'])->name('productByCategory');
+// Route::get('product', function () {
+//     $products = Product::with('categories:name','tags')->get();
+//     $categories = ProductCategory::all();
+//     return view('addtocart', compact('products', 'categories'));
+// })->name('cart');
+// Route::get('/productByTag/{id}',[CategoryController::class,'productByTag']);
+// Route::get('/category', [CategoryController::class, 'index'])->name('cateogry');
+// Route::get('/productByCategory/{id}', [CategoryController::class, 'productByCategory'])->name('productByCategory');
 
 //checkoutform
 Route::get('/products/cart/checkout',function(){
@@ -184,29 +185,52 @@ Route::get('/products/cart/checkout',function(){
 })->name('checkoutform');
 
 //user addtocart
-Route::post('products/cart/add', [cartController::class, 'addToCart'])->name('cart.add');
-Route::get('products/cartlist', function () {
-    return view('cartlist');
-})->name('cartlist');
-Route::get('products/cart/removeall', [cartController::class, 'removeAllItem'])->name('cart.removeall');
-Route::get('products/cart/remove/{id}', [cartController::class, 'removeItem'])->name('cart.remove');
-Route::put('products/cart/update/{id}', [cartController::class, 'updateItem'])->name('cart.update');
-Route::put('products/cart/decrease/{id}', [cartController::class, 'decreaseItem'])->name('cart.decrease');
+// Route::post('products/cart/add', [cartController::class, 'addToCart'])->name('cart.add');
+// Route::get('products/cartlist', function () {
+//     return view('cartlist');
+// })->name('cartlist');
+// Route::get('products/cart/removeall', [cartController::class, 'removeAllItem'])->name('cart.removeall');
+// Route::get('products/cart/remove/{id}', [cartController::class, 'removeItem'])->name('cart.remove');
+// Route::put('products/cart/update/{id}', [cartController::class, 'updateItem'])->name('cart.update');
+// Route::put('products/cart/decrease/{id}', [cartController::class, 'decreaseItem'])->name('cart.decrease');
+
+// ========cart update========
+Route::get('store/{id}/{name}/{price}/{fileId}/{file}', [cartController::class, 'store'])->name('product#store');
+Route::get('cart', [cartController::class, 'items'])->name('cart#items');
+Route::get('clear', [cartController::class, 'clear'])->name('cart#clear');
+Route::get('increase/{id}', [cartController::class, 'increase'])->name('item#increase');
+Route::get('decrease/{id}', [cartController::class, 'decrease'])->name('item#decrease');
+Route::get('remove/{id}', [cartController::class, 'remove'])->name('remove#item');
+
+
+
 
 //user wishlist with auth
 Route::group(['middleware' => 'auth'], function () {
-Route::get('products/wishlist', function () {
-        return view('wishlist');
-    })->name('wishlist');
-    Route::post('products/wishlist/add', [cartController::class, 'addWishlist'])->name('wishlist.add');
-    Route::get('products/wishlist/remove/{id}/{pid}', [cartController::class, 'removeWishlist'])->name('wishlist.remove');
-    Route::get('products/wishlist/removeall', [cartController::class, 'removeAllWishlist'])->name('wishlist.removeall');
+// Route::get('products/wishlist', function () {
+//         return view('wishlist');
+//     })->name('wishlist');
+//     Route::post('products/wishlist/add', [cartController::class, 'addWishlist'])->name('wishlist.add');
+//     Route::get('products/wishlist/remove/{id}/{pid}', [cartController::class, 'removeWishlist'])->name('wishlist.remove');
+//     Route::get('products/wishlist/removeall', [cartController::class, 'removeAllWishlist'])->name('wishlist.removeall');
+
+// ============wishlist add  update========
+    Route::get('wishLIst/{id}/{name}/{price}/{filed}/{file}', [cartController::class, 'wishList'])->name("product#wishList");
+    Route::get('wishItems', [cartController::class, 'wish'])->name('wish#item');
+    Route::get('clearWish', [cartController::class, 'clearWish'])->name('clear#wish');
 
 //user checkout and order
     Route::get('products/checkout/{id}', [OrderController::class, 'getOrders'])->name('checkout');
     // Route::post('products/order/add', [OrderController::class, 'addOrder'])->name('orderadd');
     Route::get('admin/order', [OrderController::class, 'getOrdersAdmin'])->name('admin.checkout');
     Route::get('admin/order/status/{id}', [OrderController::class, 'updateStatus'])->name('admin.status');
+
+
+    // =======order list======
+    Route::get('order/list', [OrderController::class, 'orderList'])->name('order#list');
+    Route::get('order/detail/{id}', [OrderController::class, 'detail'])->name('order#detail');
+
+
 
     // Route::post('products/order/by/id', [OrderController::class, 'orderById'])->name('by.id');
     // Route::post('products/order/by/name', [OrderController::class, 'orderByUserName'])->name('by.name');
@@ -266,4 +290,14 @@ Route::get('products/wishlist', function () {
     //     return view('welcome');
     // });
 });
+
+
+// =======asonemart==========
+
+Route::get('/homepage', function () {
+    return view('layouts.asonemart.index');
+});
+
+Route::get('/products', [ProductController::class, 'products'])->name('products#list');
+
 Route::post('products/order/add', [OrderController::class, 'addOrder'])->name('orderadd');
