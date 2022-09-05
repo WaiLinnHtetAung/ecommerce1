@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Cart;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Session;
+
 class cartController extends Controller
 {
     // public function addToCart(Request $req)
@@ -118,7 +120,8 @@ class cartController extends Controller
 
     //viewing cart items
     public function items() {
-        return view('layouts.asonemart.cartItems');
+        $categories = ProductCategory::all();
+        return view('layouts.asonemart.cartItems', compact('categories'));
     }
 
     //clear all cart items

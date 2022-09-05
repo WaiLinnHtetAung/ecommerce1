@@ -2,57 +2,38 @@
 
 @section('content')
 <section class="categories">
-    {{-- <div class="container">
+    <div class="container">
         <div class="row">
             <div class="categories__slider owl-carousel">
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{asset('asonemart/images/categories/cat-1.jpg')}}">
-                        <h5><a href="#">Fresh Fruit</a></h5>
+                @foreach ($categories as $category)
+                    <div class="col-lg-9">
+                        <div class="categories__item set-bg w-100" data-setbg="#">
+                            <img src="{{$category->photo->url}}" class="w-100 h-100" style="object-fit: cover;" alt="">
+                            <h5 class="mt-2"><a href="#">{{$category->name}}</a></h5>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{asset('asonemart/images/categories/cat-2.jpg')}}">
-                        <h5><a href="#">Dried Fruit</a></h5>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{asset('asonemart/images/categories/cat-3.jpg')}}">
-                        <h5><a href="#">Vegetables</a></h5>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{asset('asonemart/images/categories/cat-4.jpg')}}">
-                        <h5><a href="#">drink fruits</a></h5>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="categories__item set-bg" data-setbg="{{asset('asonemart/images/categories/cat-5.jpg')}}">
-                        <h5><a href="#">drink fruits</a></h5>
-                    </div>
-                </div>
+                @endforeach
+
             </div>
         </div>
-    </div> --}}
+    </div>
 </section>
 <section class="featured spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12" id="shop">
                 <div class="section-title">
                     <h2>Featured Product</h2>
                 </div>
-                <div class="featured__controls">
-                    <ul>
-                        <li class="active" data-filter="*">All</li>
+                {{-- <div class="featured__controls">
+                    <ul id='categoryFilter'>
+                        <li onclick="location='{{route('products#list')}}'" class="active" data-filter="*">All</li>
                         @foreach ($categories as $category)
-                            <li data-filter=".{{$category->name}}">{{$category->name}}</li>
+                            <li id="{{$category->id}}"  data-filter=".{{$category->name}}" onclick="location='{{route('category#filter', $category->id)}}'" >{{$category->name}}</li>
                         @endforeach
-                        {{-- <li data-filter=".oranges">Oranges</li>
-                        <li data-filter=".fresh-meat">Fresh Meat</li>
-                        <li data-filter=".vegetables">Vegetables</li>
-                        <li data-filter=".fastfood">Fastfood</li> --}}
+
                     </ul>
-                </div>
+                </div> --}}
 
                 {{-- ========add cart success========== --}}
                 @if(session('addCartSuccess'))
@@ -90,7 +71,8 @@
             @foreach ($products as $product)
                 <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" style="object-fit: cover !important;" data-setbg="{{ $product->photo['url'] }}">
+                        <div class="featured__item__pic set-bg" style="object-fit: cover !important;" data-setbg="{{ $product->photo->url }}">
+                            <img class="featured__item__pic set-bg" style="object-fit: cover !important;" src="{{ $product->photo->url }}" alt="">
                             <ul class="featured__item__pic__hover">
                                 <li><a href="{{route('product#wishList', [$product->id, $product->name, $product->price, $product->photo['id'], $product->photo['file_name']])}}" ><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -236,62 +218,31 @@
                     <h4>Latest Products</h4>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
+                            {{-- @foreach ($latestProducts as $latestProduct) --}}
+                            @for ($i=0; $i < 3; $i++)
                             <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-1.jpg')}}" alt="Latest Product">
+                                <div class="latest-product__item__pic" style="width: 120px; object-fit:cover;">
+                                    <img  src="{{$latestProducts[$i]->photo->url}}" alt="Latest Product">
                                 </div>
                                 <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
+                                    <h6>{{$latestProducts[$i]->name}}</h6>
+                                    <span>{{$latestProducts[$i]->price}} mmk</span>
                                 </div>
                             </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-2.jpg')}}" alt="Latest Product">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-3.jpg')}}" alt="Latest Product">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            @endfor
                         </div>
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-1.jpg')}}" alt="Latest Product">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-2.jpg')}}" alt="Latest Product">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-3.jpg')}}" alt="Latest Product">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            @for ($i=3; $i<6; $i++)
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic" style="width: 120px;object-fit:cover;">
+                                        <img src="{{$latestProducts[$i]->photo->url}}" alt="Latest Product">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{$latestProducts[$i]->name}}</h6>
+                                        <span>{{$latestProducts[$i]->price}} mmk</span>
+                                    </div>
+                                </a>
+                            @endfor
                         </div>
                     </div>
                 </div>
@@ -301,62 +252,30 @@
                     <h4>Top Rated Products</h4>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-1.jpg')}}" alt="Latest Product">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-2.jpg')}}" alt="Latest Product">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-3.jpg')}}" alt="Latest Product">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            @for ($i = 0; $i < 3; $i++)
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic" style="width: 120px;object-fit:cover;">
+                                        <img src="{{$topPrice[$i]->photo->url}}" alt="Latest Product">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{$topPrice[$i]->name}}</h6>
+                                        <span>{{$topPrice[$i]->price}} mmk</span>
+                                    </div>
+                                </a>
+                            @endfor
                         </div>
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-1.jpg')}}" alt="Latest Product">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-2.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-3.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            @for ($i = 3; $i < 6; $i++)
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic" style="width: 120px;object-fit:cover;">
+                                        <img src="{{$topPrice[$i]->photo->url}}" alt="Latest Product">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{$topPrice[$i]->name}}</h6>
+                                        <span>{{$topPrice[$i]->price}} mmk</span>
+                                    </div>
+                                </a>
+                            @endfor
                         </div>
                     </div>
                 </div>
@@ -366,62 +285,30 @@
                     <h4>Review Products</h4>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-1.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-2.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-3.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            @for ($i = 0; $i < 3; $i++)
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic" style="width: 120px;object-fit:cover;">
+                                        <img src="{{$random[$i]->photo->url}}" alt="Latest Product">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{$random[$i]->name}}</h6>
+                                        <span>{{$random[$i]->price}} mmk</span>
+                                    </div>
+                                </a>
+                            @endfor
                         </div>
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-1.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-2.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="{{asset('asonemart/images/latest-product/lp-3.jpg')}}" alt="">
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            @for ($i = 3; $i < 6; $i++)
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic" style="width: 120px;object-fit:cover;">
+                                        <img src="{{$random[$i]->photo->url}}" alt="Latest Product">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>{{$random[$i]->name}}</h6>
+                                        <span>{{$random[$i]->price}} mmk</span>
+                                    </div>
+                                </a>
+                            @endfor
                         </div>
                     </div>
                 </div>
@@ -489,4 +376,31 @@
 </section>
 @endsection
 {{-- ===========cart ajax codes=========== --}}
+
+@section('category')
+
+    {{-- <script>
+        $(document).ready(function() {
+            // $('#categoryFilter li ').click(function() {
+
+            //     $categoryId = this.id;
+
+
+            // })
+            console.log('hello');
+            $.ajax({
+                    method : 'GET',
+                    url : 'http://localhost:8000/ajax/filter',
+                    dataType : 'JSON',
+                    success : function(res) {
+                        console.log(res);
+                    }
+                });
+
+
+
+
+        });
+    </script> --}}
+@endsection
 

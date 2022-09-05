@@ -139,8 +139,8 @@
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="#">Home</a></li>
-                            <li><a href="#">Shop</a></li>
+                            <li class="active"><a href="{{route('products#list')}}">Home</a></li>
+                            <li><a href="#shop">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="#">Shop Details</a></li>
@@ -160,7 +160,7 @@
                             <li><a href="{{route('wish#item')}}"><i class="fa fa-heart"></i> <span>{{Cart::instance('wishlist')->count()}}</span></a></li>
                             <li><a href="{{route('cart#items')}}"><i class="fa fa-shopping-bag"></i> <span>{{Cart::instance('shoppingcart')->count()}}</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>150000</span></div>
+                        <div class="header__cart__price">item: <span>{{$products->count()}}</span></div>
                     </div>
                 </div>
             </div>
@@ -177,10 +177,13 @@
                     <div class="hero__categories">
                         <div class="hero__categories__all">
                             <i class="fa fa-bars"></i>
-                            <span>All departments</span>
+                            <span>Categories</span>
                         </div>
                         <ul>
-                            <li><a href="#">Fresh Meat</a></li>
+                            @foreach ($categories as $category)
+                                <li onclick="location='{{route('category#filter', $category->id)}}'"><a>{{$category->name}}</a></li>
+                            @endforeach
+                            {{-- <li><a href="#">Fresh Meat</a></li>
                             <li><a href="#">Vegetables</a></li>
                             <li><a href="#">Fruit & Nut Gifts</a></li>
                             <li><a href="#">Fresh Berries</a></li>
@@ -190,7 +193,7 @@
                             <li><a href="#">Fresh Onion</a></li>
                             <li><a href="#">Papayaya & Crisps</a></li>
                             <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
+                            <li><a href="#">Fresh Bananas</a></li> --}}
                         </ul>
                     </div>
                 </div>
@@ -308,4 +311,7 @@
     <script src="asonemart/js/main.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    @yield('category')
 </html>

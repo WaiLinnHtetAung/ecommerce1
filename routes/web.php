@@ -301,3 +301,8 @@ Route::get('/homepage', function () {
 Route::get('/products', [ProductController::class, 'products'])->name('products#list');
 
 Route::post('products/order/add', [OrderController::class, 'addOrder'])->name('orderadd');
+
+Route::get('category/filter/{id}', [CategoryController::class, 'filter'])->name('category#filter');
+
+Route::get('/filter', [CategoryController::class, 'filt'])->name('cate#filter');
+
